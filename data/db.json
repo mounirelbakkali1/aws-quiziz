@@ -1,0 +1,115 @@
+{
+  "quiz": [
+    {
+      "id": 1,
+      "title": "AWS - Quiz",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit eum perferendis ut accusamus voluptate consectetur commodi praesentium rem minus possimus consequatur et accusantium sequi vel numquam, doloribus modi perspiciatis blanditiis",
+      "questions": [
+        {
+          "id": 1,
+          "question": "Why is AWS more economical than traditional data centers for applications with varying compute workloads?",
+          "options": [
+            {
+              "id": 1,
+              "content": "Amazon EC2 costs are billed on a monthly basis"
+            },
+            {
+              "id": 2,
+              "content": "Users retain full administrative access to their Amazon EC2 instances"
+            },
+            {
+              "id": 3,
+              "content": "Amazon EC2 instances can be launched on demand when needed."
+            },
+            {
+              "id": 4,
+              "content": "Users can permanently run enough instances to handle peak workloads"
+            }
+          ],
+          "answers": {
+            "correct": 3,
+            "comment": "The ability to launch instances on demand when needed allows users to launch and terminate instances in response to a varying workload. This is a more economical practice than purchasing enough on-premises servers to handle the peak load."
+          }
+        },
+        {
+          "id": 2,
+          "question": "Which AWS service would simplify the migration of a database to AWS ?",
+          "options": [
+            {
+              "id": 1,
+              "content": "AWS Storage Gateway"
+            },
+            {
+              "id": 2,
+              "content": "AWS Database Migration Service (AWS DMS)"
+            },
+            {
+              "id": 3,
+              "content": "Amazon EC2."
+            },
+            {
+              "id": 4,
+              "content": "Amazon AppStream 2.0"
+            }
+          ],
+          "answers": {
+            "correct": 2,
+            "comment": "– AWS DMS helps users migrate databases to AWS quickly and securely. The source database remains fully operational during the migration, minimizing downtime to applications that rely on the database. AWS DMS can migrate data to and from most widely used commercial and open-source databases"
+          }
+        },
+        {
+          "id": 3,
+          "question": "Which AWS offering enables users to find, buy, and immediately start using software solutions in theirAWS environment?",
+          "options": [
+            {
+              "id": 1,
+              "content": "AWS Config"
+            },
+            {
+              "id": 2,
+              "content": "AWS OpsWorks"
+            },
+            {
+              "id": 3,
+              "content": "AWS SDK"
+            },
+            {
+              "id": 4,
+              "content": "AWS Marketplace"
+            }
+          ],
+          "answers": {
+            "correct": 4,
+            "comment": "AWS Marketplace is a digital catalog with thousands of software listings from independent software vendors that makes it easy to find, test, buy, and deploy software that runs on AWS to applications that rely on the database. AWS DMS can migrate data to and from most widely used commercial and open-source databases"
+          }
+        },
+        {
+          "id": 4,
+          "question": "Which AWS networking service enables a company to create a virtual network within AWS?",
+          "options": [
+            {
+              "id": 1,
+              "content": "AWS Config"
+            },
+            {
+              "id": 2,
+              "content": "Amazon Route 53"
+            },
+            {
+              "id": 3,
+              "content": "AWS Direct Connect"
+            },
+            {
+              "id": 4,
+              "content": "Amazon Virtual Private Cloud (Amazon VPC)"
+            }
+          ],
+          "answers": {
+            "correct": 4,
+            "comment": "Amazon VPC lets users provision a logically isolated section of the AWS Cloud where users can launch AWS resources in a virtual network that they define."
+          }
+        }
+      ]
+    }
+  ]
+}

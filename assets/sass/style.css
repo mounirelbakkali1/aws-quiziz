@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,400;1,700&display=swap");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0px;
+  padding: 0px;
+  background-image: url("../img/bg-aws.jfif");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /*quetion container*/
+  /*quetion container*/
+}
+body header nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.107);
+  color: white;
+}
+body header nav div#\#logo {
+  padding: 20px;
+}
+body header nav div ul {
+  display: flex;
+  margin: 0px;
+  list-style: none;
+}
+body header nav div ul li {
+  padding-inline: 20px;
+  padding: 20px;
+}
+body header nav div ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+body h3 {
+  letter-spacing: 2px;
+}
+body .option span {
+  background-color: orange;
+  border-radius: 50%;
+  font-size: 19px;
+  padding: 10px 16px;
+  font-weight: 700;
+  margin-right: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+}
+body .option {
+  background-color: #5b6a7e;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  cursor: pointer;
+  position: relative;
+}
+body input[type=checkbox] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -3px;
+}
+body .option:hover {
+  background-color: #465568;
+}
+body .container {
+  padding: 10%;
+}
+body .quiz-box {
+  padding: 5%;
+  background-color: #465568;
+  color: white;
+}
+body input[type=radio] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -3px;
+  opacity: 0;
+}
+
+.btn {
+  border: none;
+  padding: 12px 24px;
+}
+
+.btn-orange {
+  background-color: #eb9417;
+  color: white;
+}
+
+.btn-grey {
+  background-color: rgba(153, 139, 120, 0.4117647059);
+  color: rgb(255, 255, 255);
+}
+
+#quiz-questions-box {
+  padding: 2%;
+  background-color: #465568;
+  color: white;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.selected {
+  border: 2px solid #eb9417;
+  background-color: #a96200 !important;
+}
+
+.score {
+  position: absolute;
+  display: none;
+  background-color: #ffffff;
+  width: 50vw;
+  top: 22%;
+  left: 20%;
+  text-align: center;
+  padding: 20px;
+}
+
+button.closebtn {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background-color: transparent;
+  border: none;
+}
+
+.option.success {
+  background-color: #48bf9b;
+}/*# sourceMappingURL=style.css.map */
