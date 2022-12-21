@@ -25,6 +25,7 @@ async function loadQuize() {
 }
 
 function startQuiz(idQuiz) {
+  $(".score").hide();
   holderUserAnswersArray = [];
   $(".container").animate({
     height: "+=200px",
@@ -38,7 +39,7 @@ function startQuiz(idQuiz) {
 }
 
 function diplayquestions(quiz) {
-  console.log(Object.values(quiz.questions));
+  //console.log(Object.values(quiz.questions));
 
   function processQuestions(question) {
     // console.log(question.question);
@@ -51,10 +52,10 @@ function diplayquestions(quiz) {
       options += `<div class="option"><div><span>${option.id}</span><input type="radio" name="response" class="radio" value="${option.id}">${option.content}</div></div>`;
     });
 
-    let template = `<div id="quiz-questions-box">
+    let template = `<div id="quiz-questions-box" style="position:relative">
         <div><i class="bi bi-box" style="margin-right:10px"></i>AWS - QUIZ</div>
         <div style="display:flex;justify-content:space-between;">
-        <p>Question ${question.id}/4</p>
+        <p>Question ${question.id}/${quiz.questions.length}</p>
         <p id="seconds"></p>
         </div>
         <h3 style="padding:30px 0px">${question.question}</h3>
@@ -71,6 +72,7 @@ function diplayquestions(quiz) {
           <script>
           
         </script>
+        <progress max="100" value="100"></progress>
         </div>`;
     $(".container").html(template);
 
@@ -90,7 +92,7 @@ function diplayquestions(quiz) {
   }
   let index = 0; // The index of the next element to show
   function doNext() {
-    console.log(index);
+    //console.log(index);
     processQuestions(Object.values(quiz.questions)[index]); // affichage des questions
     /*
 	
@@ -105,12 +107,14 @@ function diplayquestions(quiz) {
       var now = new Date().getTime();
       distance = t - now;
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      $("#seconds").text(seconds + ` seconds -${index}`);
+      $("#seconds").text(seconds + ` seconds`);
+      $("progress").val(seconds * 3.3);
       if (distance <= 0) {
         clearInterval(secondsCounter);
         secondsCounter = null;
         $("#seconds").text("Time out !");
         passed = false;
+        if (index + 1 == quiz.questions.length) showresult(quiz);
       }
     }, 1000);
     /*
@@ -185,8 +189,8 @@ function diplayquestions(quiz) {
 //   }).then((data) => console.log(data));
 // });
 function showresult(data) {
-  alert("done");
-  console.log(holderUserAnswersArray);
+  //alert("done");
+  //console.log(holderUserAnswersArray);
   let arr = holderUserAnswersArray.sort((p1, p2) =>
     p1.questionId > p2.questionId ? 1 : p1.questionId < p2.questionId ? -1 : 0
   );
@@ -194,10 +198,10 @@ function showresult(data) {
   let correctOnes = 0;
   for (let i = 1; i <= questions.length; i++) {
     const element = questions[i - 1].answers;
-    console.log(
-      "correct is " + element.correct + " comment : " + element.comment
-    );
-    console.log("answer equivalent " + arr[i - 1].resId);
+    // console.log(
+    //   "correct is " + element.correct + " comment : " + element.comment
+    // );
+    // console.log("answer equivalent " + arr[i - 1].resId);
 
     if (element.correct == arr[i - 1].resId) correctOnes++;
   }
@@ -210,23 +214,28 @@ function showresult(data) {
   questions.forEach((question) => {
     let options = "";
     let _class = "";
-    let test = false;
+    //let test = false;
     question.options.forEach((option) => {
       if (
         holderUserAnswersArray[i].resId == question.answers.correct &&
-        !test
+        question.answers.correct == option.id
       ) {
         _class = "success";
-        test = true;
-      } else _class = "";
+      } else if (
+        holderUserAnswersArray[i].resId != question.answers.correct &&
+        holderUserAnswersArray[i].resId == option.id
+      )
+        _class = "wrong";
+      else _class = "";
       options += `<div class="option ${_class}"><div><span>${option.id}</span><input type="radio" name="response" class="radio" value="${option.id}">${option.content}</div></div>`;
     });
 
     template += `
         <div>
-        <p>Question ${question.id}/4</p>
+        <p>Question ${question.id}/${data.questions.length}</p>
         <h3 style="padding:30px 0px">${question.question}</h3>
           ${options}
+          <p class='score_question_comment'><img src='../assets/img/icons8-ok-48.png'>${question.answers.comment}</p>
         </div>`;
     i++;
   });
@@ -235,7 +244,9 @@ function showresult(data) {
   $(".container").css({ color: "white" });
   $("body").css({ height: "fit-content", overflow: "auto" });
   $(".container").html(template);
+  $("#username").text("Congratulations " + sessionStorage.getItem("name"));
   $(".score").show();
+  //$(".score").animate({ display: "block" }, 1000, "swing");
   $("#score").text(score + " Score");
   $("#score_details").html(`
   You attempt<span style="color:blue"><b> ${questions.length} question</b></span> from that <span style="color:#72d561"><b>${correctOnes} answer </b></span> are correct`);

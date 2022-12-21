@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document</title>
+ <link rel="stylesheet" href="../../assets/sass/style.css">
+</head>
+<body>
+ <div>
+  <div id="form_container">
+    <form action="" id="form">
+       <h3>Enter Your name</h3>
+      <div><input type="text" name="name" id="" placeholder="your name"></div>
+      <button class="btn btn-orange" type="submit">Start</button>
+    </form>
+   </div>
+ </div>
+</body>
+<script>
+ let form = document.forms.namedItem("form");
+ form.addEventListener("submit",function(e){
+   e.preventDefault()
+   //alert("hello "+form.name.value)
+   sessionStorage.setItem("name", form.name.value);
+   window.location.replace("../");
+ })
+</script>
+</html>

@@ -14,21 +14,24 @@
  </style>
 </head>
 <body>
+ 
  <div class="container">
   
  </div>
  <div class="score" >
   <div style="position: relative;">
    <div style="background-image: url('../assets/img/icons8-winner-100.png');background-repeat: no-repeat;background-position: center;background-size: cover;width: 150px;height: 150px;margin: auto;"></div>
-  <h3>Congrats</h3>
+   <h2 id="username"></h2>
   <h1 style="color: #72d561;" id="score"></h1>
   <p>Quiz completed successfuly</p>
   <p id="score_details"></p>
   <button class="closebtn" onclick="$('.score').hide()"><i class="bi bi-x-lg"></i></button>
-  <button class="btn btn-orange bold" style="width: 100%;">Retake quiz</button>
+  <button class="btn btn-orange bold" style="width: 100%;" onclick="startQuiz(1)">Retake quiz</button>
   </div>
  </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../assets/js/main.js"></script>
+<script>
+</script>
 </html>

@@ -122,6 +122,9 @@ body input[type=radio] {
   left: 20%;
   text-align: center;
   padding: 20px;
+  transition-timing-function: ease-in-out;
+  transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  transition-duration: 2s;
 }
 
 button.closebtn {
@@ -134,4 +137,81 @@ button.closebtn {
 
 .option.success {
   background-color: #48bf9b;
+}
+
+.option.wrong {
+  background-color: #e76247;
+}
+
+.score_question_comment {
+  margin-top: 42px;
+  background-color: rgba(2, 161, 113, 0.3882352941);
+  padding: 20px;
+  position: relative;
+}
+
+progress {
+  width: 100%;
+  position: absolute;
+  top: -3px;
+  left: 0px;
+  height: 6px;
+  accent-color: orange;
+}
+
+section#home {
+  display: grid;
+  height: 100%;
+  padding: 2%;
+  grid-template-columns: 50% 50%;
+  color: white;
+}
+section#home div#img_home {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+section#home div h4 {
+  color: inherit;
+  font-size: 30px;
+}
+section#home div h1 {
+  font-size: 55px;
+}
+section#home div h4::after {
+  content: "";
+  display: block;
+  height: 5px;
+  background-color: #eb9417;
+  width: 10%;
+}
+
+#form_container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 2%;
+}
+#form_container form#form {
+  background-color: #273b54;
+  padding: 2%;
+  min-width: 50%;
+  text-align: center;
+}
+#form_container form#form input {
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 80%;
+  font-size: 18px;
+  border: 1px solid orange;
+  background-color: rgba(39, 59, 84, 0.5490196078);
+  color: inherit;
+}
+#form_container form#form button {
+  margin-top: 10px;
+  width: 20%;
 }/*# sourceMappingURL=style.css.map */

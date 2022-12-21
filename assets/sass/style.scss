@@ -145,6 +145,9 @@ body {
   left: 20%;
   text-align: center;
   padding: 20px;
+  transition-timing-function: ease-in-out;
+  transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  transition-duration: 2s;
 }
 
 button.closebtn {
@@ -157,4 +160,92 @@ button.closebtn {
 
 .option.success {
   background-color: #48bf9b;
+}
+
+.option.wrong {
+  background-color: #e76247;
+}
+
+.score_question_comment {
+  margin-top: 42px;
+  background-color: #02a17163;
+  padding: 20px;
+  position: relative
+}
+
+progress {
+  width: 100%;
+  position: absolute;
+  top: -3px;
+  left: 0px;
+  height: 6px;
+  accent-color: orange;
+  //border-color: #eb9417;
+}
+
+section#home {
+  display: grid;
+  height: 100%;
+  padding: 2%;
+  grid-template-columns: 50% 50%;
+  color: white;
+
+  div#img_home {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+
+  }
+
+  div {
+    h4 {
+      color: inherit;
+      font-size: 30px;
+    }
+
+    h1 {
+      font-size: 55px;
+    }
+
+    h4::after {
+      content: "";
+      display: block;
+      height: 5px;
+      background-color: #eb9417;
+      width: 10%;
+    }
+  }
+}
+
+#form_container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 2%;
+
+  form#form {
+    background-color: #273b54;
+    padding: 2%;
+    min-width: 50%;
+    text-align: center;
+
+    input {
+      padding: 10px;
+      margin-bottom: 10px;
+      width: 80%;
+      font-size: 18px;
+      border: 1px solid orange;
+      background-color: #273b548c;
+      color: inherit;
+    }
+
+    button {
+      margin-top: 10px;
+      width: 20%;
+    }
+  }
 }
