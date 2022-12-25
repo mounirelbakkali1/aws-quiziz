@@ -90,6 +90,7 @@ function diplayquestions(quiz) {
 
     */
   }
+
   let index = 0; // The index of the next element to show
   function doNext() {
     //console.log(index);

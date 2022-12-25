@@ -19,7 +19,7 @@ body {
 }
 body header nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: rgba(0, 0, 0, 0.107);
   color: white;
 }
@@ -32,7 +32,7 @@ body header nav div ul {
   list-style: none;
 }
 body header nav div ul li {
-  padding-inline: 20px;
+  padding-inline: 10px;
   padding: 20px;
 }
 body header nav div ul li a {
@@ -174,10 +174,10 @@ section#home div#img_home {
 }
 section#home div h4 {
   color: inherit;
-  font-size: 30px;
+  font-size: 20px;
 }
 section#home div h1 {
-  font-size: 55px;
+  font-size: 35px;
 }
 section#home div h4::after {
   content: "";
@@ -214,4 +214,52 @@ section#home div h4::after {
 #form_container form#form button {
   margin-top: 10px;
   width: 20%;
+}
+
+#toggle {
+  display: none;
+}
+#toggle button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  padding: 10px;
+}
+
+@media (max-width: 700px) {
+  body {
+    overflow: hidden;
+  }
+  nav {
+    flex-direction: column;
+    position: absolute;
+    top: -154px;
+    z-index: -10;
+    width: 100%;
+  }
+  nav.active {
+    top: 40px;
+    background-color: #243040;
+    z-index: 10;
+  }
+  nav.active div ul {
+    display: block;
+  }
+  nav.active div ul li:hover {
+    background-color: #eb9417;
+  }
+  #img_home {
+    display: none;
+  }
+  #home :first-child {
+    width: 100vw;
+  }
+  .container {
+    font-size: 0.8rem;
+    padding: 0px !important;
+  }
+  #toggle {
+    display: block;
+  }
 }/*# sourceMappingURL=style.css.map */

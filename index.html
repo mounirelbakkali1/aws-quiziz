@@ -5,13 +5,15 @@
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link rel="stylesheet" href="./assets/sass/style.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
  <title>AWS Quiziz</title>
 </head>
 <body>
  <header>
-  <nav>
-   <div id="#logo">
-   </div>
+  <div id="toggle">
+    <button class="toggle"><i class="bi bi-list"></i></button>
+  </div>
+  <nav class="navbar">
    <div>
     <ul>
      <li><a href="">Home</a></li>
@@ -39,3 +41,14 @@
  </section>
 </body>
 </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(function () {
+    $(".toggle").click(function(){
+      console.log("object");
+      let nav=document.querySelector('.navbar').classList;
+      nav.toggle('active')
+      console.log(nav);
+    })
+  });
+</script>
