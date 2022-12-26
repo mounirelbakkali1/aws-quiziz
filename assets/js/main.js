@@ -5,6 +5,7 @@ window.onbeforeunload = function (event) {
 $(document).ready(async function () {
   loadQuize();
 });
+let randomArr = random(10, 0);
 
 async function loadQuize() {
   let url = "http://localhost:3000/quiz";
@@ -25,7 +26,7 @@ async function loadQuize() {
 }
 
 function startQuiz(idQuiz) {
-  $(".score").hide();
+  //$(".score").hide();
   holderUserAnswersArray = [];
   $(".container").animate({
     height: "+=200px",
@@ -37,7 +38,6 @@ function startQuiz(idQuiz) {
 
   //$(".container").css("background-color", "#465568");
 }
-
 function diplayquestions(quiz) {
   //console.log(Object.values(quiz.questions));
 
@@ -45,7 +45,7 @@ function diplayquestions(quiz) {
     // console.log(question.question);
     // console.log(question.options);
     let options = "";
-
+    console.log(question);
     // The every() function behaves exactly like forEach(), except it stops iterating through the array whenever the callback function returns a falsy value.
 
     question.options.forEach((option) => {
@@ -55,7 +55,7 @@ function diplayquestions(quiz) {
     let template = `<div id="quiz-questions-box" style="position:relative">
         <div><i class="bi bi-box" style="margin-right:10px"></i>AWS - QUIZ</div>
         <div style="display:flex;justify-content:space-between;">
-        <p>Question ${question.id}/${quiz.questions.length}</p>
+        <p>Question ${index + 1}/${quiz.questions.length}</p>
         <p id="seconds"></p>
         </div>
         <h3 style="padding:30px 0px">${question.question}</h3>
@@ -90,16 +90,20 @@ function diplayquestions(quiz) {
 
     */
   }
-
+  console.log(...randomArr);
   let index = 0; // The index of the next element to show
   function doNext() {
-    //console.log(index);
-    processQuestions(Object.values(quiz.questions)[index]); // affichage des questions
+    console.log("index1 : " + index);
+    console.log(Object.values(quiz.questions));
+    // console.log(Object.values(quiz.questions[9]));
+    processQuestions(Object.values(quiz.questions)[randomArr[index]]); // affichage des questions
     /*
 	
 	------------------------ TIMER ---------------
 	
 	*/
+    console.log("index2 : " + index);
+
     var t = new Date();
     t.setSeconds(t.getSeconds() + 30);
     var distance;
@@ -115,7 +119,13 @@ function diplayquestions(quiz) {
         secondsCounter = null;
         $("#seconds").text("Time out !");
         passed = false;
-        if (index + 1 == quiz.questions.length) showresult(quiz);
+        holderUserAnswersArray.push({
+          questionId: form.questionID.value,
+          resId: 0,
+          quizId: form.quizeID.value,
+        });
+        //console.log("index" + index);
+        if (index == quiz.questions.length) showresult(quiz);
       }
     }, 1000);
     /*
@@ -126,6 +136,7 @@ function diplayquestions(quiz) {
 
     ++index;
     var form = document.forms.namedItem("questions_form");
+    form.reset();
     form.addEventListener("submit", function processQuiz(e) {
       e.preventDefault();
       const val = Object.values(form.response).filter((input) => input.checked); // convert Object to array
@@ -174,24 +185,8 @@ function diplayquestions(quiz) {
   var passed;
   var secondsCounter;
   doNext();
-
-  // Object.values(quiz.questions).every((question) => {
-  //   alert("question id" + question.id);
-
-  //   setTimeout(function () {
-  //     return true;
-  //   }, 10000);
-  // });
 }
-// let arr = [1, 2, 3, 4, 5];
-// arr.forEach(async (e) => {
-//   element = await new Promise((res, rej) => {
-//     setTimeout(() => res(e), 2000);
-//   }).then((data) => console.log(data));
-// });
 function showresult(data) {
-  //alert("done");
-  //console.log(holderUserAnswersArray);
   let arr = holderUserAnswersArray.sort((p1, p2) =>
     p1.questionId > p2.questionId ? 1 : p1.questionId < p2.questionId ? -1 : 0
   );
@@ -199,11 +194,6 @@ function showresult(data) {
   let correctOnes = 0;
   for (let i = 1; i <= questions.length; i++) {
     const element = questions[i - 1].answers;
-    // console.log(
-    //   "correct is " + element.correct + " comment : " + element.comment
-    // );
-    // console.log("answer equivalent " + arr[i - 1].resId);
-
     if (element.correct == arr[i - 1].resId) correctOnes++;
   }
   var score = (correctOnes / questions.length) * 100 + " %";
@@ -246,9 +236,26 @@ function showresult(data) {
   $("body").css({ height: "fit-content", overflow: "auto" });
   $(".container").html(template);
   $("#username").text("Congratulations " + sessionStorage.getItem("name"));
-  $(".score").show();
+  document.querySelector(".score").style.opacity = "1";
+  document.querySelector(".score").style.visibility = "visible";
   //$(".score").animate({ display: "block" }, 1000, "swing");
   $("#score").text(score + " Score");
   $("#score_details").html(`
   You attempt<span style="color:blue"><b> ${questions.length} question</b></span> from that <span style="color:#72d561"><b>${correctOnes} answer </b></span> are correct`);
 }
+
+function random(max, min) {
+  arr = [];
+  for (i = 0; i < max; i++) {
+    x = Math.floor(Math.random() * max) + min;
+    if (arr.includes(x) == true) {
+      i = i - 1;
+    } else {
+      if (x > max == false) {
+        arr.push(x);
+      }
+    }
+  }
+  return arr;
+}
+//console.log(...random(10, 1));

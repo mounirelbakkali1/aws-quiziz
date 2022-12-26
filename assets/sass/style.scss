@@ -9,7 +9,7 @@ $breakpoint-tablet: 700px;
 body {
   font-family: 'Poppins', sans-serif;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   margin: 0px;
   padding: 0px;
@@ -139,16 +139,24 @@ body {
 
 .score {
   position: absolute;
-  display: none;
   background-color: #ffffff;
   width: 50vw;
-  top: 22%;
-  left: 20%;
+  top: 50%;
+  left: 50%;
   text-align: center;
   padding: 20px;
   transition-timing-function: ease-in-out;
   transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-  transition-duration: 2s;
+  transition: opacity 2s ease-in-out;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.result {
+  opacity: 1;
+  visibility: visible;
+
 }
 
 button.closebtn {
@@ -179,15 +187,14 @@ progress {
   position: absolute;
   top: -3px;
   left: 0px;
-  height: 6px;
+  height: 10px;
   accent-color: orange;
   //border-color: #eb9417;
 }
 
 section#home {
   display: grid;
-  height: 100%;
-  padding: 2%;
+  min-height: 100vh;
   grid-template-columns: 50% 50%;
   color: white;
 
@@ -268,6 +275,11 @@ section#home {
 @media (max-width: $breakpoint-tablet) {
   body {
     overflow: hidden;
+    height: fit-content;
+  }
+
+  .score {
+    width: 80%;
   }
 
   nav {
