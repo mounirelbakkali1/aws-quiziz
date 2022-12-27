@@ -1,32 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Start Quiz</title>
- <link rel="stylesheet" href="../../assets/sass/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Quiz</title>
+  <link rel="stylesheet" href="../../assets/sass/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.min.css"
+    integrity="sha512-cyIcYOviYhF0bHIhzXWJQ/7xnaBuIIOecYoPZBgJHQKFPo+TOBA+BY1EnTpmM8yKDU4ZdI3UGccNGCEUdfbBqw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.all.min.js"
+    integrity="sha512-IZ95TbsPTDl3eT5GwqTJH/14xZ2feLEGJRbII6bRKtE/HC6x3N4cHye7yyikadgAsuiddCY2+6gMntpVHL1gHw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
+
 <body>
- <div>
-  <div id="form_container">
-    <form action="" id="form">
-       <h3>Enter Your name</h3>
-      <div><input type="text" name="name" id="" placeholder="your name"></div>
-      <button class="btn btn-orange" type="submit">Start</button>
-    </form>
-   </div>
- </div>
+  <div>
+    <div id="form_container">
+      <form action="" id="form">
+        <h3>Enter Your name</h3>
+        <div><input type="text" name="name" id="" placeholder="your name"></div>
+        <button class="btn btn-orange" type="submit">Start</button>
+      </form>
+    </div>
+  </div>
 </body>
 <script>
- let form = document.forms.namedItem("form");
- form.addEventListener("submit",function(e){
-   e.preventDefault()
-   //alert("hello "+form.name.value)
-   sessionStorage.setItem("name", form.name.value);
-   window.location.replace("../");
- });
- 
+  let form = document.forms.namedItem("form");
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const { value: accept } = await Swal.fire({
+      title: 'Terms and conditions',
+      html: `
+  <ol>
+    <li>you will be passing a quiz of 10 questions you have to answer each one before 30</li>  
+    <li>each question not answered considered wrong</li>  
+    <li>you will pass the test only if you got score more than 60%</li>  
+    <li>you can retake the quiz whenever you want so make sure to good prepare</li>  
+  </ol>
+  `,
+      input: 'checkbox',
+      inputValue: 1,
+      inputPlaceholder:
+        'I agree with the terms and conditions',
+      confirmButtonText:
+        'Continue <i class="fa fa-arrow-right"></i>',
+      confirmButtonColor: "#eb9417",
+      inputValidator: (result) => {
+        return !result && 'You need to agree with T&C'
+      }
+    })
+
+    if (accept) {
+      Swal.fire('You agreed with T&C :)')
+      setTimeout(() => {
+        window.location.replace("../");
+      }, 1000);
+    }
+    //alert("hello "+form.name.value)
+    sessionStorage.setItem("name", form.name.value);
+  });
+
 
 </script>
+
 </html>

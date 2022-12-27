@@ -26,7 +26,10 @@ async function loadQuize() {
 }
 
 function startQuiz(idQuiz) {
-  //$(".score").hide();
+  document.getElementById("questionaire").classList.add("active");
+  document.getElementById("result_part").classList.remove("active");
+  document.querySelector(".score").style.opacity = "0";
+  document.querySelector(".score").style.visibility = "hidden";
   holderUserAnswersArray = [];
   $(".container").animate({
     height: "+=200px",
@@ -35,21 +38,21 @@ function startQuiz(idQuiz) {
   let questions = fetch("http://localhost:3000/quiz/" + idQuiz)
     .then((data) => data.json())
     .then((data) => diplayquestions(data));
-
-  //$(".container").css("background-color", "#465568");
 }
 function diplayquestions(quiz) {
-  //console.log(Object.values(quiz.questions));
-
   function processQuestions(question) {
-    // console.log(question.question);
-    // console.log(question.options);
     let options = "";
-    console.log(question);
     // The every() function behaves exactly like forEach(), except it stops iterating through the array whenever the callback function returns a falsy value.
 
     question.options.forEach((option) => {
-      options += `<div class="option"><div><span>${option.id}</span><input type="radio" name="response" class="radio" value="${option.id}">${option.content}</div></div>`;
+      options += `
+          <div class="option" style="position:relative;">
+            <div style="display:flex">
+              <span>${option.id}</span>
+              <input type="radio" name="response" class="radio" value="${option.id}">
+              ${option.content}
+            </div>
+          </div>`;
     });
 
     let template = `<div id="quiz-questions-box" style="position:relative">
@@ -58,7 +61,7 @@ function diplayquestions(quiz) {
         <p>Question ${index + 1}/${quiz.questions.length}</p>
         <p id="seconds"></p>
         </div>
-        <h3 style="padding:30px 0px">${question.question}</h3>
+        <h3 style="padding:0px">${question.question}</h3>
         <form id="questions_form">
         <div style="display:grid;gap:10px">
         <input type="hidden" name="quizeID" value="${quiz.id}">
@@ -90,19 +93,14 @@ function diplayquestions(quiz) {
 
     */
   }
-  console.log(...randomArr);
   let index = 0; // The index of the next element to show
   function doNext() {
-    console.log("index1 : " + index);
-    console.log(Object.values(quiz.questions));
-    // console.log(Object.values(quiz.questions[9]));
     processQuestions(Object.values(quiz.questions)[randomArr[index]]); // affichage des questions
     /*
 	
 	------------------------ TIMER ---------------
 	
 	*/
-    console.log("index2 : " + index);
 
     var t = new Date();
     t.setSeconds(t.getSeconds() + 30);
@@ -124,7 +122,6 @@ function diplayquestions(quiz) {
           resId: 0,
           quizId: form.quizeID.value,
         });
-        //console.log("index" + index);
         if (index == quiz.questions.length) showresult(quiz);
       }
     }, 1000);
@@ -151,11 +148,9 @@ function diplayquestions(quiz) {
         quizId: form.quizeID.value,
       });
 
-      //console.log(holderUserAnswersArray);
       clearInterval(secondsCounter);
       secondsCounter = null;
       passed = true;
-      //return index == 4 ? alert("done") : doNext();
       if (index == quiz.questions.length) {
         showresult(quiz);
         return;
@@ -169,7 +164,6 @@ function diplayquestions(quiz) {
       radio.addEventListener(
         "change",
         function () {
-          //console.log("cliked");
           form.response.forEach((input) => {
             input.parentElement.parentElement.classList.remove("selected");
           });
@@ -187,6 +181,7 @@ function diplayquestions(quiz) {
   doNext();
 }
 function showresult(data) {
+  document.getElementById("result_part").classList.add("active");
   let arr = holderUserAnswersArray.sort((p1, p2) =>
     p1.questionId > p2.questionId ? 1 : p1.questionId < p2.questionId ? -1 : 0
   );
@@ -196,7 +191,9 @@ function showresult(data) {
     const element = questions[i - 1].answers;
     if (element.correct == arr[i - 1].resId) correctOnes++;
   }
-  var score = (correctOnes / questions.length) * 100 + " %";
+  var score = (correctOnes / questions.length) * 100;
+  let feedBack =
+    score < 30 ? "Not Bad" : score < 60 ? "Good results" : "Exellent keep up";
   $(".container").empty();
 
   // The every() function behaves exactly like forEach(), except it stops iterating through the array whenever the callback function returns a falsy value.
@@ -218,7 +215,7 @@ function showresult(data) {
       )
         _class = "wrong";
       else _class = "";
-      options += `<div class="option ${_class}"><div><span>${option.id}</span><input type="radio" name="response" class="radio" value="${option.id}">${option.content}</div></div>`;
+      options += `<div class="option ${_class}"><div style="display:flex"><span>${option.id}</span>${option.content}</div></div>`;
     });
 
     template += `
@@ -230,16 +227,19 @@ function showresult(data) {
         </div>`;
     i++;
   });
+  // template += `
+  // <button class="btn btn-orange bold" style="width: 100%;height:50px;margin-top:100px" onclick="startQuiz(1)">Retake quiz</button>
+  // `;
   //document.getElementsByClassName(".container").$(selected).removeAttr('" attribute you want to remove "');
   $(".container").removeAttr("style");
   $(".container").css({ color: "white" });
   $("body").css({ height: "fit-content", overflow: "auto" });
   $(".container").html(template);
-  $("#username").text("Congratulations " + sessionStorage.getItem("name"));
+  $("#username").text(feedBack + " " + sessionStorage.getItem("name"));
   document.querySelector(".score").style.opacity = "1";
   document.querySelector(".score").style.visibility = "visible";
   //$(".score").animate({ display: "block" }, 1000, "swing");
-  $("#score").text(score + " Score");
+  $("#score").text(score + "%  Score");
   $("#score_details").html(`
   You attempt<span style="color:blue"><b> ${questions.length} question</b></span> from that <span style="color:#72d561"><b>${correctOnes} answer </b></span> are correct`);
 }
@@ -258,4 +258,3 @@ function random(max, min) {
   }
   return arr;
 }
-//console.log(...random(10, 1));
