@@ -9,20 +9,30 @@ let randomArr = random(10, 0);
 
 async function loadQuize() {
   let url = "http://localhost:3000/quiz";
-  let res = await fetch(url);
-  const json = await res.json();
-  let output = "";
-  json.forEach((quiz) => {
-    output += `
- <div class="quiz-box">
- <h3>${quiz.title}</h3>
- <p>${quiz.questions.length} questions</p>
- <p>${quiz.description}</p>
- <button class='btn btn-orange bold'onclick='startQuiz(${quiz.id})'>start quiz</button>
- </div>
- `;
-  });
-  $(".container").html(output);
+  let res = await fetch(url)
+    .then((data) => data.json())
+    // .then((data) => console.log(data.quiz))
+    .then((data) => afficher(data))
+    .catch(async () => {
+      let res = await fetch("../data/db.json")
+        .then((data) => data.json())
+        // .then((data) => console.log(data.quiz))
+        .then((data) => afficher(data.quiz));
+    });
+  function afficher(data) {
+    let output = "";
+    data.forEach((quiz) => {
+      output += `
+		   <div class="quiz-box">
+		   <h3>${quiz.title}</h3>
+		   <p>${quiz.questions.length} questions</p>
+		   <p>${quiz.description}</p>
+		   <button class='btn btn-orange bold'onclick='startQuiz(${quiz.id})'>start quiz</button>
+		   </div>
+		   `;
+    });
+    $(".container").html(output);
+  }
 }
 
 function startQuiz(idQuiz) {
