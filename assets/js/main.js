@@ -33,6 +33,7 @@ async function loadQuize() {
     });
     $(".container").html(output);
   }
+  return;
 }
 
 function startQuiz(idQuiz) {
@@ -45,9 +46,18 @@ function startQuiz(idQuiz) {
     height: "+=200px",
     padding: "30px",
   });
-  let questions = fetch("http://localhost:3000/quiz/" + idQuiz)
+  let questions = fetch("http://localhost:30000/quiz/" + idQuiz)
     .then((data) => data.json())
-    .then((data) => diplayquestions(data));
+    .then(() => {
+      throw new Error("jjeze");
+    })
+    .then((data) => diplayquestions(data))
+    .catch(() => {
+      let qts = fetch("../data/db.json")
+        .then((data) => data.json())
+        // .then((data) => console.log(data.quiz[idQuiz - 1]))
+        .then((data) => diplayquestions(data.quiz[idQuiz - 1]));
+    });
 }
 function diplayquestions(quiz) {
   function processQuestions(question) {
