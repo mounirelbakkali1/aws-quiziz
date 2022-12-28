@@ -8,6 +8,8 @@ $(document).ready(async function () {
 let randomArr = random(10, 0);
 
 async function loadQuize() {
+  document.getElementById("questionaire").classList.remove("active");
+  document.getElementById("result_part").classList.remove("active");
   let url = "http://localhost:3000/quiz";
   let res = await fetch(url)
     .then((data) => data.json())
@@ -46,7 +48,7 @@ function startQuiz(idQuiz) {
     height: "+=200px",
     padding: "30px",
   });
-  let questions = fetch("http://localhost:30000/quiz/" + idQuiz)
+  let questions = fetch("http://localhost:3000/quiz/" + idQuiz)
     .then((data) => data.json())
     .then(() => {
       throw new Error("jjeze");
@@ -98,20 +100,6 @@ function diplayquestions(quiz) {
         <progress max="100" value="100"></progress>
         </div>`;
     $(".container").html(template);
-
-    /*
-
-
-
-
-
-
-
-
-
-
-
-    */
   }
   let index = 0; // The index of the next element to show
   function doNext() {
@@ -247,6 +235,7 @@ function showresult(data) {
         </div>`;
     i++;
   });
+  template += `<button class="btn btn-orange bold" style="width: 100%;margin-top: 100px;padding: 20px;" onclick="loadQuize()">Retake quiz</button>`;
   // template += `
   // <button class="btn btn-orange bold" style="width: 100%;height:50px;margin-top:100px" onclick="startQuiz(1)">Retake quiz</button>
   // `;
