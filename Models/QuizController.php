@@ -37,8 +37,13 @@ class QuizController extends DBConnection
     {
         $correctAnswers = $this->getCorrection($id_quiz);
         $correctOnes = 0;
+        // var_dump($correctAnswers);
+        // var_dump($userAnswers);
         for ($i = 0; $i < count($correctAnswers); $i++) {
             $element = $correctAnswers[$i]['id'];
+            // var_dump($element);
+            // var_dump($userAnswers[$i]['resId']);
+            // echo "<hr>";
             if ($element == $userAnswers[$i]['resId']) $correctOnes++;
         }
         $score = ($correctOnes / count($userAnswers)) * 100;
@@ -87,11 +92,6 @@ class QuizController extends DBConnection
             $_class = "";
             $u = 1;
             foreach ($optionsWIthqsts[$i]['options'] as $option) {
-                // var_dump($userAnswers[$i]['resId'] == $correctAnswers[$i]['id']);
-                // echo "<br>";
-                // var_dump($correctAnswers[$i]['id'] == $option['id']);
-                // echo "<hr>";
-
                 if (
                     $userAnswers[$i]['resId'] == $correctAnswers[$i]['id'] &&
                     $correctAnswers[$i]['id'] == $option['id']
@@ -100,9 +100,11 @@ class QuizController extends DBConnection
                 } else if (
                     $userAnswers[$i]['resId'] != $correctAnswers[$i]['id'] &&
                     $correctAnswers[$i]['id'] == $option['id']
-                )
+                ) {
                     $_class = "wrong";
-                else $_class = "";
+                } else {
+                    $_class = "";
+                }
                 $optionsTmplate .= "<div class='option $_class'><div style='display:flex'><span>" . $u . "</span>" . $option['content'] . "</div></div>";
                 $u++;
             };
