@@ -25,5 +25,6 @@ function  retreiveCorrection()
 {
  $quize = new Controller();
  $id_quiz = $_GET['quizId'];
- echo json_encode($quize->compareAnswer(json_decode($_GET['userAnswers'], true), $id_quiz));
+ $username = $_GET['username'];
+ echo json_encode($quize->compareAnswer(json_decode($_GET['userAnswers'], true), $id_quiz, $username));
 }

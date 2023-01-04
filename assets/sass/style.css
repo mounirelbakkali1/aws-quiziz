@@ -160,6 +160,7 @@ button.closebtn {
   margin-top: 42px;
   background-color: rgba(2, 161, 113, 0.3882352941);
   padding: 20px;
+  border-radius: 10px;
   position: relative;
 }
 

@@ -65,18 +65,20 @@ function diplayquestions(quiz, idQuiz) {
   function processQuestions(question) {
     let options = "";
     let u = 1;
+    let alphabet = ["A", "B", "C", "D"];
     question.options.forEach((option) => {
       options += `
           <div class="option" style="position:relative;">
             <div style="display:flex">
-              <span>${u}</span>
-              <input type="radio" name="response" class="radio" value="${option.id}">
+              <span>${alphabet[u - 1]}</span>
+              <input type="radio" name="response" class="radio" value="${
+                option.id
+              }">
               <p style="margin:10px">${option.content}</p>
             </div>
           </div>`;
       u++;
     });
-
     let template = `<div id="quiz-questions-box" style="position:relative">
         <div><i class="bi bi-box" style="margin-right:10px"></i>AWS - QUIZ</div>
         <div style="display:flex;justify-content:space-between;">
@@ -177,6 +179,7 @@ function diplayquestions(quiz, idQuiz) {
   var secondsCounter;
   doNext();
 }
+
 function showresult(data, idQuiz) {
   document.getElementById("result_part").classList.add("active");
   holderUserAnswersArray.sort((a, b) => a.questionId - b.questionId);
@@ -186,6 +189,7 @@ function showresult(data, idQuiz) {
     data: {
       userAnswers: JSON.stringify(holderUserAnswersArray),
       quizId: idQuiz,
+      username: sessionStorage.getItem("name"),
     },
     cache: false,
     async: false,
