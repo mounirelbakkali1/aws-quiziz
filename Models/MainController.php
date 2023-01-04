@@ -1,24 +1,35 @@
 <?php
-require 'DBConnection.php';
-// if (isset($_GET['questions'])) getQuizQuestions();
-class QuizController extends DBConnection
+require 'Quiz.php';
+require 'Question.php';
+require 'Reponse.php';
+class Controller
 {
+    private static $quizes = array();
+    private static $Quiz_questions = array();
+    private static $questions = array();
+    private static $responses = array();
+    private static $correction = array();
 
     public function getQuizzes()
     {
-        $ststm = $this->connect()->prepare("SELECT * FROM quizes");
-        $ststm->execute();
-        $quizes = $ststm->fetchAll();
+        if (null != self::$quizes) {
+            return self::$quizes;
+        }
+        $quizesfromDB = Quiz::getQuizes();
         $fullfilledArray = array();
-        foreach ($quizes as $quiz) {
+        foreach ($quizesfromDB as $quiz) {
             $countQuestions = count($this->getQuestions($quiz['id']));
             array_push($fullfilledArray, array("quiz" => $quiz, "numOfQuestions" => $countQuestions));
         }
+        self::$quizes = $fullfilledArray;
         return $fullfilledArray;
     }
 
     public function getQuizQuestions($id_quiz)
     {
+        if (isset(self::$Quiz_questions["$id_quiz"])) {
+            return self::$Quiz_questions["$id_quiz"];
+        };
         $questions = $this->getQuestions($id_quiz);
         $responses = $this->getResponses($id_quiz);
         $new_array = array();
@@ -30,6 +41,7 @@ class QuizController extends DBConnection
             $new = array("id" => $questions[$i]['id'], "question" => $questions[$i]['question'], "options" => $sum_ofOptions);
             array_push($new_array, $new);
         }
+        self::$Quiz_questions["$id_quiz"] = $new_array;
         return  $new_array;
     }
 
@@ -42,32 +54,41 @@ class QuizController extends DBConnection
             if ($element == $userAnswers[$i]['resId']) $correctOnes++;
         }
         $score = ($correctOnes / count($userAnswers)) * 100;
-        $feedBack = ($score < 30) ? "Not Bad" : (($score < 60) ? "Good results" : "Exellent keep up");
+        $feedBack = ($score < 30) ? "Not Bad keep learning" : (($score < 60) ? "GOOD :)<br> w're pround of you" : "Exellent keep it up");
         $template = $this->showFeedBack($userAnswers, $correctAnswers, $id_quiz);
-        return array("template" => $template, "feedback" => $feedBack, "score" => $score, "correctOnes" => $correctOnes);
+        return array("template" => $template, "feedback" => $feedBack, "score" => intval($score), "correctOnes" => $correctOnes);
     }
 
 
     private function getResponses($id_quiz)
     {
-        $ststm = $this->connect()->prepare("SELECT responses.id ,responses.response as content,responses.question_id FROM responses INNER join questions on responses.question_id = questions.id where questions.quiz_id =? ;");
-        $ststm->execute(array($id_quiz));
-        return $ststm->fetchAll();
+        if (isset(self::$responses["$id_quiz"])) {
+            return self::$responses["$id_quiz"];
+        };
+        $responses = Reponse::getResponses($id_quiz);
+        self::$responses["$id_quiz"] = $responses;
+        return $responses;
     }
 
     private function getCorrection($id_quiz)
     {
-        $ststm = $this->connect()->prepare("SELECT responses.id ,responses.question_id,responses.comment FROM responses INNER join questions on responses.question_id = questions.id where questions.quiz_id =? and responses.isCorrect=1;");
-        $ststm->execute(array($id_quiz));
-        return $ststm->fetchAll();
+        if (isset(self::$correction["$id_quiz"])) {
+            return self::$correction["$id_quiz"];
+        };
+        $corr = Reponse::getCorrection($id_quiz);
+        self::$correction = $corr;
+        return $corr;
     }
 
 
     private function getQuestions($quizID)
     {
-        $ststm = $this->connect()->prepare("SELECT * from questions where quiz_id=?");
-        $ststm->execute(array($quizID));
-        return $ststm->fetchAll();
+        if (isset(self::$questions["$quizID"])) {
+            return self::$questions["$quizID"];
+        };
+        $questions = Question::getQuestions($quizID);
+        self::$questions["$quizID"] = $questions;
+        return $questions;
     }
     private function showFeedBack($userAnswers, $correctAnswers, $id_quiz)
     {
@@ -75,23 +96,11 @@ class QuizController extends DBConnection
         $i = 0;
         $questions = $this->getQuestions($id_quiz);
         $optionsWIthqsts = $this->getQuizQuestions($id_quiz);
-        // print_r(json_encode($userAnswers));
-        // echo "<hr>";
-        // print_r(json_encode($correctAnswers));
-        // echo "<hr>";
-        // print_r(json_encode($optionsWIthqsts));
-
         foreach ($questions as $question) {
-            // var_dump($correctAnswers[$i]['id']);
             $optionsTmplate = "";
             $_class = "";
             $u = 1;
             foreach ($optionsWIthqsts[$i]['options'] as $option) {
-                // var_dump($userAnswers[$i]['resId'] == $correctAnswers[$i]['id']);
-                // echo "<br>";
-                // var_dump($correctAnswers[$i]['id'] == $option['id']);
-                // echo "<hr>";
-
                 if (
                     $userAnswers[$i]['resId'] == $correctAnswers[$i]['id'] &&
                     $correctAnswers[$i]['id'] == $option['id']
@@ -100,10 +109,12 @@ class QuizController extends DBConnection
                 } else if (
                     $userAnswers[$i]['resId'] != $correctAnswers[$i]['id'] &&
                     $correctAnswers[$i]['id'] == $option['id']
-                )
+                ) {
                     $_class = "wrong";
-                else $_class = "";
-                $optionsTmplate .= "<div class='option $_class'><div style='display:flex'><span>" . $u . "</span>" . $option['content'] . "</div></div>";
+                } else {
+                    $_class = "";
+                }
+                $optionsTmplate .= "<div class='option $_class' style='margin-bottom:8px'><div style='display:flex'><span>" . $u . "</span>" . $option['content'] . "</div></div>";
                 $u++;
             };
             $template .= "

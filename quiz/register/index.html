@@ -25,7 +25,8 @@
       <form action="" id="form">
         <h3>Enter Your name</h3>
         <div><input type="text" name="name" id="" placeholder="your name"></div>
-        <button class="btn btn-orange" type="submit">Start</button>
+        <div><button class="btn btn-orange" style="width: max-content;padding-inline: 40px;" type="submit">Start</button>
+        </div>
       </form>
     </div>
   </div>
@@ -57,12 +58,10 @@
     })
 
     if (accept) {
-      Swal.fire('You agreed with T&C :)')
       setTimeout(() => {
         window.location.replace("../");
       }, 1000);
     }
-    //alert("hello "+form.name.value)
     sessionStorage.setItem("name", form.name.value);
   });
 

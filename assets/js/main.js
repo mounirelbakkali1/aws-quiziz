@@ -8,28 +8,15 @@ $(document).ready(async function () {
 let randomArr;
 
 async function loadQuize() {
-  //$(".score").hide();
   hideScore();
   document.getElementById("questionaire").classList.remove("active");
   document.getElementById("result_part").classList.remove("active");
-  // let url = "http://localhost:3000/quiz";
-  // let res = await fetch(url)
-  //   .then((data) => data.json())
-  //   .then((data) => afficher(data))
-  //   .catch(async () => {
-  //     let res = await fetch("../data/db.json")
-  //       .then((data) => data.json())
-  //       // .then((data) => console.log(data.quiz))
-  //       .then((data) => afficher(data.quiz));
-  //   });
   var quizzes = $.ajax({
     type: "GET",
     url: "../Models/RequestHandler.php",
     data: {
-      //questions: JSON.stringify(data),
       loadQuizes: true,
     },
-    //dataType: "json",
     cache: false,
     async: false,
   });
@@ -37,7 +24,6 @@ async function loadQuize() {
   afficher(quizzes);
   function afficher(data) {
     let output = "";
-    console.log(data);
     data.forEach((quiz) => {
       output += `
 		   <div class="quiz-box" style='margin-top:20px'>
@@ -73,15 +59,11 @@ function startQuiz(idQuiz, numOfQuestions) {
     async: false,
   });
   questions = JSON.parse(questions.responseText);
-  // console.log(questions);
   diplayquestions(questions, idQuiz);
 }
 function diplayquestions(quiz, idQuiz) {
-  console.log(quiz);
-  console.log(idQuiz);
   function processQuestions(question) {
     let options = "";
-    // The every() function behaves exactly like forEach(), except it stops iterating through the array whenever the callback function returns a falsy value.
     let u = 1;
     question.options.forEach((option) => {
       options += `
@@ -112,9 +94,6 @@ function diplayquestions(quiz, idQuiz) {
           </div>
           </form>
           </div>
-          <script>
-          
-        </script>
         <progress max="100" value="100"></progress>
         </div>`;
     $(".container").html(template);
@@ -124,9 +103,7 @@ function diplayquestions(quiz, idQuiz) {
     // console.log(quiz);
     processQuestions(quiz[randomArr[index]]); // affichage des questions
     /*
-	
 	------------------------ TIMER ---------------
-	
 	*/
 
     var t = new Date();
@@ -153,9 +130,7 @@ function diplayquestions(quiz, idQuiz) {
       }
     }, 1000);
     /*
-	
 	------------- TIMER ------------
-	
 	*/
 
     ++index;
@@ -208,25 +183,19 @@ function diplayquestions(quiz, idQuiz) {
   doNext();
 }
 function showresult(data, idQuiz) {
-  // alert("done");
   document.getElementById("result_part").classList.add("active");
-  let arr = holderUserAnswersArray.sort((p1, p2) =>
-    p1.questionId > p2.questionId ? 1 : p1.questionId < p2.questionId ? -1 : 0
-  );
+  holderUserAnswersArray.sort((a, b) => a.questionId - b.questionId);
   var responseJSON = $.ajax({
     type: "GET",
     url: "../Models/RequestHandler.php",
     data: {
-      //questions: JSON.stringify(data),
-      userAnswers: JSON.stringify(arr),
+      userAnswers: JSON.stringify(holderUserAnswersArray),
       quizId: idQuiz,
     },
-    //dataType: "json",
     cache: false,
     async: false,
   });
   responseJSON = JSON.parse(responseJSON.responseText);
-  console.log(responseJSON);
   let template = responseJSON.template;
   template += `<button class="btn btn-orange bold" style="width: 100%;margin-top: 100px;padding: 20px;" onclick="loadQuize()">Retake quiz</button>`;
   $(".container").empty();
@@ -234,12 +203,12 @@ function showresult(data, idQuiz) {
   $(".container").css({ color: "white" });
   $("body").css({ height: "fit-content", overflow: "auto" });
   $(".container").html(template);
-  $("#username").text(
+  $("#username").html(
     responseJSON.feedback + " " + sessionStorage.getItem("name")
   );
   document.querySelector(".score").style.opacity = "1";
   document.querySelector(".score").style.visibility = "visible";
-  $("#score").text(responseJSON.score + "%  Score");
+  $("#score").html(responseJSON.score + "%  Score");
   $("#score_details").html(`
   You attempt<span style="color:blue"><b> ${data.length} question</b></span> from that <span style="color:#72d561"><b>${responseJSON.correctOnes} answer </b></span> are correct`);
 }
