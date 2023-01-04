@@ -203,12 +203,12 @@ function showresult(data, idQuiz) {
   $(".container").css({ color: "white" });
   $("body").css({ height: "fit-content", overflow: "auto" });
   $(".container").html(template);
-  $("#username").text(
+  $("#username").html(
     responseJSON.feedback + " " + sessionStorage.getItem("name")
   );
   document.querySelector(".score").style.opacity = "1";
   document.querySelector(".score").style.visibility = "visible";
-  $("#score").text(responseJSON.score + "%  Score");
+  $("#score").html(responseJSON.score + "%  Score");
   $("#score_details").html(`
   You attempt<span style="color:blue"><b> ${data.length} question</b></span> from that <span style="color:#72d561"><b>${responseJSON.correctOnes} answer </b></span> are correct`);
 }

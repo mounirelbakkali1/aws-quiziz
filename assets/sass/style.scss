@@ -3,8 +3,10 @@ $padding-header: 20px;
 $breakpoint-tablet: 700px;
 $active-color: #eb9417;
 $secondary-color: #e0e0e0;
+$main-secondary-color: #273b54;
 $spacing :clamp(0.25rem, 2vw, 0.5rem);
 $circle-size: clamp(1.5rem, 5vw, 3rem);
+$radius: 10px;
 
 *,
 *:before,
@@ -98,6 +100,7 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
     padding: 17px;
     cursor: pointer;
+    border-radius: $radius;
     position: relative
   }
 
@@ -117,7 +120,8 @@ body {
   }
 
   .quiz-box {
-    padding: 5%;
+    padding: 4%;
+    border-radius: $radius;
     background-color: #465568;
     color: white;
 
@@ -139,6 +143,7 @@ body {
 .btn {
   border: none;
   padding: 12px 24px;
+  border-radius: $radius;
 }
 
 .btn-orange {
@@ -152,9 +157,10 @@ body {
 }
 
 #quiz-questions-box {
-  padding: 2%;
+  padding: 3vw;
   background-color: #465568;
   color: white;
+  border-radius: $radius*2;
 
 }
 
@@ -173,6 +179,7 @@ body {
   width: 50vw;
   top: 50%;
   left: 50%;
+  border-radius: $radius;
   text-align: center;
   padding: 20px;
   transition-timing-function: ease-in-out;
@@ -213,12 +220,12 @@ button.closebtn {
 }
 
 progress {
-  width: 100%;
+  width: 97%;
   position: absolute;
   top: -3px;
-  left: 0px;
-  height: 10px;
-  accent-color: $active-color;
+  left: 1.5%;
+  height: 11px;
+  accent-color: #eb9417;
   //border-color: #eb9417;
 }
 
@@ -237,7 +244,7 @@ section#home {
   div {
     h4 {
       color: inherit;
-      font-size: 20px;
+      font-size: 30px;
     }
 
     h1 {
@@ -264,8 +271,9 @@ section#home {
   padding: 2%;
 
   form#form {
-    background-color: #273b54;
+    background-color: $main-secondary-color;
     padding: 2%;
+    border-radius: $radius;
     min-width: 50%;
     text-align: center;
 
@@ -274,8 +282,9 @@ section#home {
       margin-bottom: 10px;
       width: 80%;
       font-size: 18px;
+      border-radius: $radius;
       border: 1px solid $active-color;
-      background-color: #273b548c;
+      background-color: $main-secondary-color;
       color: inherit;
     }
 
