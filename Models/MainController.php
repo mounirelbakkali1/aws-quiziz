@@ -2,6 +2,7 @@
 require 'Quiz.php';
 require 'Question.php';
 require 'Reponse.php';
+require 'Historique.php';
 class Controller
 {
     private static $Quiz_questions = array();
@@ -10,19 +11,18 @@ class Controller
         $quizesfromDB = Quiz::getQuizes();
         $fullfilledArray = array();
         foreach ($quizesfromDB as $quiz) {
-            $countQuestions = count($this->getQuestions($quiz['id']));
+            $countQuestions = count(Question::getQuestions($quiz['id']));
             array_push($fullfilledArray, array("quiz" => $quiz, "numOfQuestions" => $countQuestions));
         }
         return $fullfilledArray;
     }
-
     public function getQuizQuestions($id_quiz)
     {
         if (isset(self::$Quiz_questions["$id_quiz"])) {
             return self::$Quiz_questions["$id_quiz"];
         };
-        $questions = $this->getQuestions($id_quiz);
-        $responses = $this->getResponses($id_quiz);
+        $questions = Question::getQuestions($id_quiz);
+        $responses =  Reponse::getResponses($id_quiz);
         $new_array = array();
         for ($i = 0; $i < count($questions); $i++) {
             $sum_ofOptions = array();
@@ -36,9 +36,9 @@ class Controller
         return  $new_array;
     }
 
-    public function compareAnswer($userAnswers, $id_quiz)
+    public function compareAnswer($userAnswers, $id_quiz, $username)
     {
-        $correctAnswers = $this->getCorrection($id_quiz);
+        $correctAnswers = Reponse::getCorrection($id_quiz);
         $correctOnes = 0;
         for ($i = 0; $i < count($correctAnswers); $i++) {
             $element = $correctAnswers[$i]['id'];
@@ -47,54 +47,43 @@ class Controller
         $score = ($correctOnes / count($userAnswers)) * 100;
         $feedBack = ($score < 30) ? "Not Bad keep learning" : (($score < 60) ? "GOOD :)<br> w're pround of you" : "Exellent keep it up");
         $template = $this->showFeedBack($userAnswers, $correctAnswers, $id_quiz);
+        /* save historique */
+        $date = date('Y-m-d H:i:s');
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+        $browser_name = explode(" ", $_SERVER['HTTP_USER_AGENT'])[0];
+        $userOS = $_SERVER['COMSPEC'];
+        Historique::saveHistoric($username, $id_quiz, $score, $date, $ip_address, $browser_name, $userOS);
+        /* save historique */
         return array("template" => $template, "feedback" => $feedBack, "score" => intval($score), "correctOnes" => $correctOnes);
     }
 
 
-    private function getResponses($id_quiz)
-    {
-
-        $responses = Reponse::getResponses($id_quiz);
-        return $responses;
-    }
-
-    private function getCorrection($id_quiz)
-    {
-        $corr = Reponse::getCorrection($id_quiz);
-        return $corr;
-    }
-
-
-    private function getQuestions($quizID)
-    {
-        $questions = Question::getQuestions($quizID);
-        return $questions;
-    }
     private function showFeedBack($userAnswers, $correctAnswers, $id_quiz)
     {
         $template = "";
         $i = 0;
-        $questions = $this->getQuestions($id_quiz);
+        $questions = Question::getQuestions($id_quiz);
         $optionsWIthqsts = $this->getQuizQuestions($id_quiz);
         foreach ($questions as $question) {
             $optionsTmplate = "";
             $_class = "";
             $u = 1;
+            $alphabet = array("A", "B", "C", "D");
             foreach ($optionsWIthqsts[$i]['options'] as $option) {
                 if (
                     $userAnswers[$i]['resId'] == $correctAnswers[$i]['id'] &&
-                    $correctAnswers[$i]['id'] == $option['id']
+                    $userAnswers[$i]['resId'] == $option['id']
                 ) {
                     $_class = "success";
                 } else if (
                     $userAnswers[$i]['resId'] != $correctAnswers[$i]['id'] &&
-                    $correctAnswers[$i]['id'] == $option['id']
+                    $userAnswers[$i]['resId'] == $option['id']
                 ) {
                     $_class = "wrong";
                 } else {
                     $_class = "";
                 }
-                $optionsTmplate .= "<div class='option $_class' style='margin-bottom:8px'><div style='display:flex'><span>" . $u . "</span>" . $option['content'] . "</div></div>";
+                $optionsTmplate .= "<div class='option $_class' style='margin-bottom:8px'><div style='display:flex'><span>" . $alphabet[$u - 1] . "</span>" . $option['content'] . "</div></div>";
                 $u++;
             };
             $template .= "
@@ -106,7 +95,6 @@ class Controller
                 </div>";
             $i++;
         };
-
         return $template;
     }
 }
