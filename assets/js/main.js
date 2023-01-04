@@ -100,7 +100,6 @@ function diplayquestions(quiz, idQuiz) {
   }
   let index = 0; // The index of the next element to show
   function doNext() {
-    // console.log(quiz);
     processQuestions(quiz[randomArr[index]]); // affichage des questions
     /*
 	------------------------ TIMER ---------------
@@ -129,10 +128,6 @@ function diplayquestions(quiz, idQuiz) {
         if (index == quiz.questions.length) showresult(quiz, idQuiz);
       }
     }, 1000);
-    /*
-	------------- TIMER ------------
-	*/
-
     ++index;
     var form = document.forms.namedItem("questions_form");
     form.reset();

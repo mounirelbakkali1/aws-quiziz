@@ -4,24 +4,15 @@ require 'Question.php';
 require 'Reponse.php';
 class Controller
 {
-    private static $quizes = array();
     private static $Quiz_questions = array();
-    private static $questions = array();
-    private static $responses = array();
-    private static $correction = array();
-
     public function getQuizzes()
     {
-        if (null != self::$quizes) {
-            return self::$quizes;
-        }
         $quizesfromDB = Quiz::getQuizes();
         $fullfilledArray = array();
         foreach ($quizesfromDB as $quiz) {
             $countQuestions = count($this->getQuestions($quiz['id']));
             array_push($fullfilledArray, array("quiz" => $quiz, "numOfQuestions" => $countQuestions));
         }
-        self::$quizes = $fullfilledArray;
         return $fullfilledArray;
     }
 
@@ -62,32 +53,21 @@ class Controller
 
     private function getResponses($id_quiz)
     {
-        if (isset(self::$responses["$id_quiz"])) {
-            return self::$responses["$id_quiz"];
-        };
+
         $responses = Reponse::getResponses($id_quiz);
-        self::$responses["$id_quiz"] = $responses;
         return $responses;
     }
 
     private function getCorrection($id_quiz)
     {
-        if (isset(self::$correction["$id_quiz"])) {
-            return self::$correction["$id_quiz"];
-        };
         $corr = Reponse::getCorrection($id_quiz);
-        self::$correction = $corr;
         return $corr;
     }
 
 
     private function getQuestions($quizID)
     {
-        if (isset(self::$questions["$quizID"])) {
-            return self::$questions["$quizID"];
-        };
         $questions = Question::getQuestions($quizID);
-        self::$questions["$quizID"] = $questions;
         return $questions;
     }
     private function showFeedBack($userAnswers, $correctAnswers, $id_quiz)
